@@ -1,0 +1,16 @@
+Package: epitomeSim
+Type: Package
+Title: Epitome (Epitope Prediction and Mapping)
+Version: 1.0
+Depends: R (>= 2.10), base, stats, utils
+Imports: doParallel, parallel, shiny, shinyjs, shinyBS, shinydashboard,
+        DT, R.utils, Biostrings, httr
+Date: 2017-03-10
+Author: Veer Singh Marwah [aut, cre]
+Maintainer: Veer Singh Marwah <veersingh.marwah@gmail.com>
+Description: Prediction and mapping of the epitope sequences from query protein sequences
+    to the reference protein sequences. Reporting the most satisfactory matches pairs.
+License: GPL-3
+RoxygenNote: 6.0.1
+NeedsCompilation: no
+Packaged: 2017-03-10 17:07:48 UTC; veer

@@ -6,9 +6,10 @@ library(shinydashboard)
 library(DT)
 library(Biostrings)
 library(httr)
-#source("R/EPItOMe.R")
 
-print(getwd())
+#this.dir <- dirname(parent.frame(2)$ofile)
+#setwd(this.dir)
+
 source("R/EPItOMe.R")
 
 options(shiny.maxRequestSize=500*1024^2)

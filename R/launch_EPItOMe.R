@@ -18,13 +18,13 @@ library(shiny)
 #' 
 
 #install.packages("hex", repos = NULL, type="source")
-launch_EPItOMeSim <- function(){
-	appDir <- system.file("EPItOMe-app", package = "epitomeSim")
-	print(system.file("EPItOMe-app", package = "epitomeSim"))
-	if (appDir == "") {
-	stop("Unable to launch INfORM Shiny interface, please check installation!.", call. = FALSE)
-	}
-
-	shiny::runApp(appDir, display.mode = "normal")
-}
-launch_EPItOMeSim()
+#launch_EPItOMeSim <- function(){
+#	appDir <- system.file("EPItOMe-app", package = "epitomeSim")
+#	print(system.file("EPItOMe-app", package = "epitomeSim"))#
+#	if (appDir == "") {
+#	stop("Unable to launch INfORM Shiny interface, please check installation!.", call. = FALSE)
+#	}
+#
+#	shiny::runApp(appDir, display.mode = "normal")
+#}
+#launch_EPItOMeSim()

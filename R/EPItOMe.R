@@ -174,7 +174,8 @@ read_epitope_seq <- function(iFile){
 #' @export
 #' 
 predict_epitopes <- function(sequence.name, sequence, method="recommended", allele="H-2-Kb", length=9, api.url="http://tools-cluster-interface.iedb.org/tools_api/mhci/"){
-	res <- httr::POST(api.url,
+	print("in predict epitope")
+  res <- httr::POST(api.url,
 	    body=list(method = method, 
 		    sequence_text = sequence, 
 		    allele = allele, 
@@ -183,13 +184,21 @@ predict_epitopes <- function(sequence.name, sequence, method="recommended", alle
 	)
 	httr::warn_for_status(res)
 
-	res.text <- httr::content(res, type="text")
+	res.text <- httr::content(res, type="text", encoding = "UTF-8")
 	res.text.split <- strsplit(res.text, split="\n")
 	res.DF <- t(as.data.frame(lapply(res.text.split[[1]], function(x) strsplit(x, split="\t")), stringsAsFactors=F))
 	colnames(res.DF) <- res.DF[1,]
 	rownames(res.DF) <- c()
-	res.DF <- res.DF[-1,]
+	
+	print("matrix")
+	print(res.DF)
+	if(nrow(res.DF) < 3){
+	  res.DF <- as.matrix(t(res.DF[-1,]))
+	}else{
+	  res.DF <- as.matrix(res.DF[-1,]) 
+	}
 	rownames(res.DF) <- c(1:nrow(res.DF))
+	print(res.DF)
 	res.DF <- as.data.frame(res.DF, stringsAsFactors=F)
 
 	if(length(grep("#", sequence.name))>0){
@@ -226,6 +235,7 @@ predict_epitopes <- function(sequence.name, sequence, method="recommended", alle
 #' @keywords internal
 #' @export
 fetch_epitopes <- function(sequence, method="recommended", allele="H-2-Kb", length=9, api.url="http://tools-cluster-interface.iedb.org/tools_api/mhci/"){
+  #httr::POST("https://eo3mlll51sol16x.m.pipedream.net")
 	res <- httr::POST(api.url,
 	    body=list(method = method, 
 		    sequence_text = sequence, 
@@ -240,7 +250,12 @@ fetch_epitopes <- function(sequence, method="recommended", allele="H-2-Kb", leng
 	res.DF <- t(as.data.frame(lapply(res.text.split[[1]], function(x) strsplit(x, split="\t")), stringsAsFactors=F))
 	colnames(res.DF) <- res.DF[1,]
 	rownames(res.DF) <- c()
-	res.DF <- res.DF[-1,]
+	print(res.DF)
+	if(nrow(res.DF) < 3){
+	  res.DF <- as.matrix(t(res.DF[-1,]))
+	}else{
+	  res.DF <- as.matrix(res.DF[-1,]) 
+	}
 	rownames(res.DF) <- c(1:nrow(res.DF))
 	res.DF <- as.data.frame(res.DF, stringsAsFactors=F)
 	

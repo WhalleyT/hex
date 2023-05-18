@@ -17,7 +17,7 @@ utils::data(list=c("BLOSUM45", "BLOSUM50", "BLOSUM62", "BLOSUM80", "BLOSUM100", 
 
 shinyServer(
         function(input, output, session){
-                myValues <- shiny::reactiveValues(queryAASeq=NULL, refAASeq=NULL, queryEpitopes=NULL, refEpitopes=NULL, cores=2, resultDF=NULL, aln_matrix=NULL)
+                myValues <- shiny::reactiveValues(queryAASeq=NULL, refAASeq=NULL, queryEpitopes=NULL, refEpitopes=NULL, cores=1, resultDF=NULL, aln_matrix=NULL)
                 
                 myValues$queryAASeq <- shiny::reactive({
 			if(input$qInputRadio=="file"){
@@ -43,6 +43,7 @@ shinyServer(
 					qTextSplit2 <- strsplit(qTextSplit[[1]][i], "\n")
 					seqName <- qTextSplit2[[1]][1]
 					seqAA <- paste0(qTextSplit2[[1]][2:length(qTextSplit2[[1]])], collapse="")
+					print(seqAA)
 					qSeqList[[seqName]] <- seqAA
 				}
 				qSeqVec <- unlist(qSeqList)
@@ -82,7 +83,7 @@ shinyServer(
 
                 myValues$cores <- shiny::reactive({
                         if(is.null(input$coresSelect))
-                        return(cores<-2)
+                        return(cores<-1)
 
                         input$coresSelect
                 })
@@ -115,8 +116,14 @@ shinyServer(
 			qEpitopesList <- list()
 			for(i in 1:length(myValues$queryAASeq())){
 				queryAASeq.name <- strsplit(names(myValues$queryAASeq()[i]), " ")[[1]][1]
+				
+				print("IEDB QUERY")
+				print(myValues$queryAASeq()[[i]])
+				
 				query_epitopes <- predict_epitopes(sequence.name=queryAASeq.name, sequence=as.character(myValues$queryAASeq()[[i]]), method=input$methodSelect, allele=input$alleleSelect, length=input$lengthSelect)
-                                query_epitopes_df <- fetch_epitopes(sequence=as.character(myValues$queryAASeq()[[i]]), method=input$methodSelect, allele=input$alleleSelect, length=input$lengthSelect)
+        print("predict epitopes done")                        
+				query_epitopes_df <- fetch_epitopes(sequence=as.character(myValues$queryAASeq()[[i]]), method=input$methodSelect, allele=input$alleleSelect, length=input$lengthSelect)
+                                print("fetch epitpes done")
                                 if(input$ic50FilterRadio==TRUE){
                                         query_epitopes_df_filtered <- filter_epitopes(epitope.DF=query_epitopes_df, ic50.threshold=input$ic50Input)
                                         if(!is.null(query_epitopes_df_filtered))
@@ -351,7 +358,7 @@ shinyServer(
 		)
 
                 output$coresUI <- shiny::renderUI({
-                        shiny::numericInput(inputId="coresSelect", label="Number of Cores", value=2, min=1, max=detectCores(), step=1)
+                        shiny::numericInput(inputId="coresSelect", label="Number of Cores", value=1, min=1, max=detectCores(), step=1)
                 })
 
 		output$exportEptiopesUI <- shiny::renderUI({

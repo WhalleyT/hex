@@ -12,7 +12,8 @@ dashboardPage(
                 #extendShinyjs(text = jsCode),
                 fluidRow(
                         box(
-                                title="Upload", status = "primary", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE, width=12,
+                                title="Input", footer = tags$a(href="https://github.com/WhalleyT/hex", "For instructions, click here"),
+                                status = "primary", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE, width=12,
                                 fluidRow(
                                         column(6,
 						wellPanel(
